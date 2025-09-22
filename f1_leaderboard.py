@@ -641,12 +641,12 @@ class F1LeaderboardDisplay:
                 time.sleep(30)
                 self.current_screen = 1 - self.current_screen  # Toggle between 0 and 1
                 
-except KeyboardInterrupt:
-            print("\nShutting down F1 Display...")
-            if HAS_EPAPER:
-                self.epd.init()
-                self.epd.Clear(0xFF)
-                self.epd.sleep()
+        except KeyboardInterrupt:
+                    print("\nShutting down F1 Display...")
+                    if HAS_EPAPER:
+                        self.epd.init()
+                        self.epd.Clear(0xFF)
+                        self.epd.sleep()
         except Exception as e:
             print(f"Unexpected error: {e}")
             if HAS_EPAPER:
