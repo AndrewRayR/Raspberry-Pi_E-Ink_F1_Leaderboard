@@ -34,6 +34,7 @@ class F1LeaderboardDisplay:
         self.current_screen = 0  # 0 = leaderboard, 1 = track
         
         # Initialize e-paper display if available
+        global HAS_EPAPER
         if HAS_EPAPER:
             try:
                 self.epd = epd2in13_V2.EPD()
@@ -48,7 +49,6 @@ class F1LeaderboardDisplay:
             except Exception as e:
                 print(f"E-paper initialization failed: {e}")
                 print("Continuing in simulation mode...")
-                global HAS_EPAPER
                 HAS_EPAPER = False
         
         # Try to load fonts (fallback to default if not available)
