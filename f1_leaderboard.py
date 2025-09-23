@@ -630,60 +630,60 @@ def update_display(self, image: Image):
         image.save(filename)
         print(f"Display updated (saved as {filename})")
 
-def run(self):
-        """Main execution loop"""
-        print("Starting F1 Leaderboard Display...")
-        print("Fetching data from OpenF1 API...")
-        
-        # Initial data fetch
-        if not self.fetch_openf1_data():
-            print("Failed to fetch initial data, using fallback data")
-        
-        # Clear screen to white at startup
-        print("Clearing display to white...")
-        white_screen = Image.new('1', (self.width, self.height), 255)  # White background
-        self.update_display(white_screen)
-        time.sleep(2)  # Show white screen for 2 seconds
-        
-        try:
-            while True:
-                # Update data every 5 minutes
-                if time.time() - self.last_update > 300:
-                    print("Updating data...")
-                    self.fetch_openf1_data()
-                
-                # Create and display current screen
-                if self.current_screen == 0:
-                    print("Displaying leaderboard screen...")
-                    image = self.create_leaderboard_screen()
-                else:
-                    print("Displaying track screen...")
-                    image = self.create_track_screen()
-                
-                self.update_display(image)
-                
-                # Switch screens every 30 seconds
-                time.sleep(30)
-                self.current_screen = 1 - self.current_screen  # Toggle between 0 and 1
-                
-        except KeyboardInterrupt:
-            print("\nShutting down F1 Display...")
-            if HAS_EPAPER and self.epd is not None:
-                try:
-                    self.epd.init()
-                    self.epd.Clear(0xFF)
-                    self.epd.sleep()
-                except:
-                    pass
-        except Exception as e:
-            print(f"Unexpected error: {e}")
-            if HAS_EPAPER and self.epd is not None:
-                try:
-                    self.epd.init()
-                    self.epd.Clear(0xFF)
-                    self.epd.sleep()
-                except:
-                    pass
+    def run(self):
+            """Main execution loop"""
+            print("Starting F1 Leaderboard Display...")
+            print("Fetching data from OpenF1 API...")
+            
+            # Initial data fetch
+            if not self.fetch_openf1_data():
+                print("Failed to fetch initial data, using fallback data")
+            
+            # Clear screen to white at startup
+            print("Clearing display to white...")
+            white_screen = Image.new('1', (self.width, self.height), 255)  # White background
+            self.update_display(white_screen)
+            time.sleep(2)  # Show white screen for 2 seconds
+            
+            try:
+                while True:
+                    # Update data every 5 minutes
+                    if time.time() - self.last_update > 300:
+                        print("Updating data...")
+                        self.fetch_openf1_data()
+                    
+                    # Create and display current screen
+                    if self.current_screen == 0:
+                        print("Displaying leaderboard screen...")
+                        image = self.create_leaderboard_screen()
+                    else:
+                        print("Displaying track screen...")
+                        image = self.create_track_screen()
+                    
+                    self.update_display(image)
+                    
+                    # Switch screens every 30 seconds
+                    time.sleep(30)
+                    self.current_screen = 1 - self.current_screen  # Toggle between 0 and 1
+                    
+            except KeyboardInterrupt:
+                print("\nShutting down F1 Display...")
+                if HAS_EPAPER and self.epd is not None:
+                    try:
+                        self.epd.init()
+                        self.epd.Clear(0xFF)
+                        self.epd.sleep()
+                    except:
+                        pass
+            except Exception as e:
+                print(f"Unexpected error: {e}")
+                if HAS_EPAPER and self.epd is not None:
+                    try:
+                        self.epd.init()
+                        self.epd.Clear(0xFF)
+                        self.epd.sleep()
+                    except:
+                        pass
 
 def main():
     """Main entry point"""
