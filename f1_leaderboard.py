@@ -613,16 +613,22 @@ class F1LeaderboardDisplay:
         return img
 
     def update_display(self, image: Image):
-        """Update the e-paper display with new image"""
-        if HAS_EPAPER:
+    """Update the e-paper display with new image"""
+    print(f"Updating display... HAS_EPAPER = {HAS_EPAPER}")
+    
+    if HAS_EPAPER:
+        try:
+            print("Sending image to e-paper display...")
             # Convert PIL image to format expected by Waveshare library
             self.epd.display(self.epd.getbuffer(image))
-        else:
-            # Save image for testing without actual hardware
-            filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
-            image.save(filename)
-            print(f"Display updated (saved as {filename})")
-
+            print("Display update sent successfully")
+        except Exception as e:
+            print(f"Error updating e-paper display: {e}")
+    else:
+        # Save image for testing without actual hardware
+        filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
+        image.save(filename)
+        print(f"Display updated (saved as {filename})")
     def run(self):
         """Main execution loop"""
         print("Starting F1 Leaderboard Display...")
