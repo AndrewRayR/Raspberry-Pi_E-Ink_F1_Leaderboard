@@ -26,8 +26,7 @@ except ImportError:
     HAS_EPAPER = False
     print("Warning: Waveshare e-paper library not found. Running in simulation mode.")
 
-class F1LeaderboardDisplay:
-    def __init__(self):
+def __init__(self):
         # Display configuration
         self.width = 250
         self.height = 122
