@@ -612,93 +612,93 @@ class F1LeaderboardDisplay:
         
         return img
 
-def update_display(self, image: Image):
-    """Update the e-paper display with new image"""
-    if HAS_EPAPER and self.epd is not None:
-        try:
-            # Convert PIL image to format expected by Waveshare library
-            self.epd.display(self.epd.getbuffer(image))
-        except Exception as e:
-            print(f"Display update failed: {e}")
-            # Fall back to saving file
+    def update_display(self, image: Image):
+        """Update the e-paper display with new image"""
+        if HAS_EPAPER and self.epd is not None:
+            try:
+                # Convert PIL image to format expected by Waveshare library
+                self.epd.display(self.epd.getbuffer(image))
+            except Exception as e:
+                print(f"Display update failed: {e}")
+                # Fall back to saving file
+                filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
+                image.save(filename)
+                print(f"Display updated (saved as {filename})")
+        else:
+            # Save image for testing without actual hardware
             filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
             image.save(filename)
             print(f"Display updated (saved as {filename})")
-    else:
-        # Save image for testing without actual hardware
-        filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
-        image.save(filename)
-        print(f"Display updated (saved as {filename})")
-
-def run(self):
-    """Main execution loop"""
-    print("Starting F1 Leaderboard Display...")
-    print("Fetching data from OpenF1 API...")
     
-    # Initial data fetch
-    if not self.fetch_openf1_data():
-        print("Failed to fetch initial data, using fallback data")
+    def run(self):
+        """Main execution loop"""
+        print("Starting F1 Leaderboard Display...")
+        print("Fetching data from OpenF1 API...")
+        
+        # Initial data fetch
+        if not self.fetch_openf1_data():
+            print("Failed to fetch initial data, using fallback data")
+        
+        # Clear screen to white at startup
+        print("Clearing display to white...")
+        white_screen = Image.new('1', (self.width, self.height), 255)  # White background
+        self.update_display(white_screen)
+        time.sleep(2)  # Show white screen for 2 seconds
+        
+        try:
+            while True:
+                # Update data every 5 minutes
+                if time.time() - self.last_update > 300:
+                    print("Updating data...")
+                    self.fetch_openf1_data()
+                
+                # Create and display current screen
+                if self.current_screen == 0:
+                    print("Displaying leaderboard screen...")
+                    image = self.create_leaderboard_screen()
+                else:
+                    print("Displaying track screen...")
+                    image = self.create_track_screen()
+                
+                self.update_display(image)
+                
+                # Switch screens every 30 seconds
+                time.sleep(30)
+                self.current_screen = 1 - self.current_screen  # Toggle between 0 and 1
+                
+        except KeyboardInterrupt:
+            print("\nShutting down F1 Display...")
+            if HAS_EPAPER and self.epd is not None:
+                try:
+                    self.epd.init()
+                    self.epd.Clear(0xFF)
+                    self.epd.sleep()
+                except:
+                    pass
+        except Exception as e:
+            print(f"Unexpected error: {e}")
+            if HAS_EPAPER and self.epd is not None:
+                try:
+                    self.epd.init()
+                    self.epd.Clear(0xFF)
+                    self.epd.sleep()
+                except:
+                    pass
     
-    # Clear screen to white at startup
-    print("Clearing display to white...")
-    white_screen = Image.new('1', (self.width, self.height), 255)  # White background
-    self.update_display(white_screen)
-    time.sleep(2)  # Show white screen for 2 seconds
+    def main():
+        """Main entry point"""
+        print("="*50)
+        print("F1 Leaderboard Display Starting...")
+        print("Waveshare 2.13\" e-Paper Edition")
+        print("Live data from OpenF1 API")
+        print("="*50)
+        
+        try:
+            display = F1LeaderboardDisplay()
+            display.run()
+        except Exception as e:
+            print(f"Failed to start F1 Display: {e}")
+            print("Check your hardware connections and try again.")
     
-    try:
-        while True:
-            # Update data every 5 minutes
-            if time.time() - self.last_update > 300:
-                print("Updating data...")
-                self.fetch_openf1_data()
-            
-            # Create and display current screen
-            if self.current_screen == 0:
-                print("Displaying leaderboard screen...")
-                image = self.create_leaderboard_screen()
-            else:
-                print("Displaying track screen...")
-                image = self.create_track_screen()
-            
-            self.update_display(image)
-            
-            # Switch screens every 30 seconds
-            time.sleep(30)
-            self.current_screen = 1 - self.current_screen  # Toggle between 0 and 1
-            
-    except KeyboardInterrupt:
-        print("\nShutting down F1 Display...")
-        if HAS_EPAPER and self.epd is not None:
-            try:
-                self.epd.init()
-                self.epd.Clear(0xFF)
-                self.epd.sleep()
-            except:
-                pass
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        if HAS_EPAPER and self.epd is not None:
-            try:
-                self.epd.init()
-                self.epd.Clear(0xFF)
-                self.epd.sleep()
-            except:
-                pass
-
-def main():
-    """Main entry point"""
-    print("="*50)
-    print("F1 Leaderboard Display Starting...")
-    print("Waveshare 2.13\" e-Paper Edition")
-    print("Live data from OpenF1 API")
-    print("="*50)
-    
-    try:
-        display = F1LeaderboardDisplay()
-        display.run()
-    except Exception as e:
-        print(f"Failed to start F1 Display: {e}")
-        print("Check your hardware connections and try again.")
-
-if __name__ == "__main__":
-    main()
+    if __name__ == "__main__":
+        main()
