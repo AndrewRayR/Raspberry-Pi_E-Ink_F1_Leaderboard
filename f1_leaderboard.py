@@ -692,13 +692,17 @@ class F1LeaderboardDisplay:
         print("Waveshare 2.13\" e-Paper Edition")
         print("Live data from OpenF1 API")
         print("="*50)
+        print("Testing class creation...")
         
         try:
             display = F1LeaderboardDisplay()
+            print(display.test_method())  # This should print "Class is working"
+            print("Class created successfully, calling run...")
             display.run()
         except Exception as e:
-            print(f"Failed to start F1 Display: {e}")
-            print("Check your hardware connections and try again.")
+            print(f"Error: {e}")
+            import traceback
+            traceback.print_exc()
     
     if __name__ == "__main__":
         main()
