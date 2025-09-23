@@ -612,9 +612,7 @@ class F1LeaderboardDisplay:
         
         return img
 
-        def update_display(self, image: Image):
-        """Update the e-paper display with new image"""
-        
+        def update_display(self, image: Image):        
         if HAS_EPAPER:
             # Convert PIL image to format expected by Waveshare library
             self.epd.display(self.epd.getbuffer(image))
