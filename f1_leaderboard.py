@@ -35,9 +35,21 @@ class F1LeaderboardDisplay:
         
         # Initialize e-paper display if available
         if HAS_EPAPER:
-            self.epd = epd2in13_V2.EPD()
-            self.epd.init()
-            self.epd.Clear(0xFF)
+            try:
+                self.epd = epd2in13_V2.EPD()
+                # Try different initialization methods
+                try:
+                    self.epd.init()
+                except TypeError:
+                    # Some versions need an update parameter
+                    self.epd.init(0)  # 0 for full update
+                self.epd.Clear(0xFF)
+                print("E-paper display initialized successfully")
+            except Exception as e:
+                print(f"E-paper initialization failed: {e}")
+                print("Continuing in simulation mode...")
+                global HAS_EPAPER
+                HAS_EPAPER = False
         
         # Try to load fonts (fallback to default if not available)
         try:
