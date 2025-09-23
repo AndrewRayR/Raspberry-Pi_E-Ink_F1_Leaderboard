@@ -673,10 +673,10 @@ def update_display(self, image: Image):
                             self.epd.init()
                             self.epd.Clear(0xFF)
                             self.epd.sleep()
-                        except:
+                        except
                             pass
                             
-                        except Exception as e:
+                        except: Exception as e:
                             print(f"Unexpected error: {e}")
                             if HAS_EPAPER and self.epd is not None:
                                 try:
