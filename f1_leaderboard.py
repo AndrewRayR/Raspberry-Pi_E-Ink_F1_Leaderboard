@@ -613,14 +613,14 @@ class F1LeaderboardDisplay:
         return img
 
         def update_display(self, image: Image):        
-        if HAS_EPAPER:
-            # Convert PIL image to format expected by Waveshare library
-            self.epd.display(self.epd.getbuffer(image))
-        else:
-            # Save image for testing without actual hardware
-            filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
-            image.save(filename)
-            print(f"Display updated (saved as {filename})")
+            if HAS_EPAPER:
+                # Convert PIL image to format expected by Waveshare library
+                self.epd.display(self.epd.getbuffer(image))
+            else:
+                # Save image for testing without actual hardware
+                filename = f"f1_display_screen_{self.current_screen}_{int(time.time())}.png"
+                image.save(filename)
+                print(f"Display updated (saved as {filename})")
 
     else:
         # Save image for testing without actual hardware
