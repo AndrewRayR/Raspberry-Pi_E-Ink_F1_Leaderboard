@@ -36,8 +36,8 @@ class F1LeaderboardDisplay:
         # Initialize e-paper display if available
         if HAS_EPAPER:
             self.epd = epd2in13_V2.EPD()
-            self.epd.init()
-            self.epd.Clear(0xFF)
+            self.epd.init(self.epd.FULL_UPDATE)
+            self.epd.clear(0xFF)
         
         # Try to load fonts (fallback to default if not available)
         try:
