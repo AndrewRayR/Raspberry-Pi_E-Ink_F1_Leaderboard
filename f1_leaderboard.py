@@ -50,6 +50,13 @@ class F1LeaderboardDisplay:
                 print(f"E-paper initialization failed: {e}")
                 print("Continuing in simulation mode...")
                 HAS_EPAPER = False
+
+        print("After __init__ definition")
+        
+        def test_method(self):
+            return "Class is working"
+        
+        print("After test_method definition")
         
         # Try to load fonts (fallback to default if not available)
         try:
