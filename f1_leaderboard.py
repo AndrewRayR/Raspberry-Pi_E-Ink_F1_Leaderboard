@@ -26,12 +26,8 @@ except ImportError:
     HAS_EPAPER = False
     print("Warning: Waveshare e-paper library not found. Running in simulation mode.")
 
-print("Starting to define class...")
-
 class F1LeaderboardDisplay:
-    print("Inside class definition...")
     def __init__(self):
-        print("Defining __init__...")
         # Display configuration
         self.width = 250
         self.height = 122
