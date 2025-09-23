@@ -632,6 +632,12 @@ class F1LeaderboardDisplay:
         if not self.fetch_openf1_data():
             print("Failed to fetch initial data, using fallback data")
         
+        # Clear screen to white at startup
+        print("Clearing display to white...")
+        white_screen = Image.new('1', (self.width, self.height), 255)  # White background
+        self.update_display(white_screen)
+        time.sleep(2)  # Show white screen for 2 seconds
+        
         try:
             while True:
                 # Update data every 5 minutes
