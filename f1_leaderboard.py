@@ -673,7 +673,7 @@ def update_display(self, image: Image):
                             self.epd.init()
                             self.epd.Clear(0xFF)
                             self.epd.sleep()
-                        except:
+                        except
                             pass
                             
                         except Exception as e:
